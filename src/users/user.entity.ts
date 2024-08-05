@@ -5,7 +5,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
+import { Report } from 'src/reports/report.entity';
 
 // variant not to send the password but it will
 // prevent sending for all requests
@@ -24,6 +26,9 @@ export class User {
   @Column()
   // @Exclude()
   password: string;
+
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[];
 
   @AfterInsert()
   logInsert() {

@@ -1,4 +1,9 @@
-import { Module, ValidationPipe, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  ValidationPipe,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,6 +13,9 @@ import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
+import { LoggingMiddleware } from './logging.middleware';
+import { CustomLoggerService } from './custom-logger.service';
+import { DatabaseService } from './database.service';
 const cookieSession = require('cookie-session');
 
 @Module({
@@ -33,6 +41,8 @@ const cookieSession = require('cookie-session');
   controllers: [AppController],
   providers: [
     AppService,
+    CustomLoggerService,
+    DatabaseService,
     // globally scoped pipe
     {
       provide: APP_PIPE,
@@ -52,5 +62,9 @@ export class AppModule {
         }),
       )
       .forRoutes('*');
+
+    consumer
+      .apply(LoggingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

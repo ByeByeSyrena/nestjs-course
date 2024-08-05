@@ -36,7 +36,11 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # dotenv environment variable files
+# Ignore all .env files
 .env*
+
+# But do not ignore .env.example
+!.env.example
 
 
 # temp directory
