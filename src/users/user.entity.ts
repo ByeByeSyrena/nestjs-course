@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from 'typeorm';
-import { Report } from 'src/reports/report.entity';
+import { Report } from '../reports/report.entity';
 
 // variant not to send the password but it will
 // prevent sending for all requests
