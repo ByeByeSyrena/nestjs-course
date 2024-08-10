@@ -33,8 +33,9 @@ async function bootstrap() {
   //   }),
   // );
 
-  const logger = app.get(CustomLoggerService);
   const databaseService = app.get(DatabaseService);
+
+  const logger = app.get(CustomLoggerService);
 
   app.useLogger(logger);
 
@@ -51,8 +52,9 @@ async function bootstrap() {
     process.exit();
   });
 
-  await app.listen(3088);
+  app.listen(3088);
 }
+
 bootstrap();
 
 // Built in logger usage in services

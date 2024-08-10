@@ -11,11 +11,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
-import { User } from './users/user.entity';
-import { Report } from './reports/report.entity';
 import { LoggingMiddleware } from './logging.middleware';
 import { CustomLoggerService } from './custom-logger.service';
 import { DatabaseService } from './database.service';
+import { dbConfig } from '../migrations/dataSource';
+import { DataSourceOptions } from 'typeorm';
 const cookieSession = require('cookie-session');
 
 @Module({
@@ -24,22 +24,25 @@ const cookieSession = require('cookie-session');
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('DB_NAME'),
-          entities: [User, Report],
-          // during development we use
-          // synchronize: true,
-          // to ease our work, but before deploy change it to false and never use again
-          synchronize: false,
-        };
-      },
-    }),
+    // code before migrations and deployment!!!!!!
+    //
+    // TypeOrmModule.forRootAsync({
+    //   inject: [ConfigService],
+    //   useFactory: (config: ConfigService) => {
+    //     return {
+    //       type: 'sqlite',
+    //       database: config.get<string>('DB_NAME'),
+    //       entities: [User, Report],
+    // during development we use
+    // synchronize: true,
+    // to ease our work, but before deploy change it to false and never use again
+    //       synchronize: false,
+    //     };
+    //   },
+    // }),
     UsersModule,
     ReportsModule,
+    TypeOrmModule.forRoot(dbConfig as DataSourceOptions),
   ],
   controllers: [AppController],
   providers: [

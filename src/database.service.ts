@@ -5,6 +5,14 @@ import { DataSource } from 'typeorm';
 export class DatabaseService implements OnModuleDestroy {
   constructor(private dataSource: DataSource) {}
 
+  async initialize() {
+    if (!this.dataSource.isInitialized) {
+      await this.dataSource.initialize();
+
+      console.log('Database connection initialized.');
+    }
+  }
+
   async onModuleDestroy() {
     await this.closeConnection();
   }
