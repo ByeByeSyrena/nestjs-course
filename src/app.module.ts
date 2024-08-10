@@ -31,7 +31,10 @@ const cookieSession = require('cookie-session');
           type: 'sqlite',
           database: config.get<string>('DB_NAME'),
           entities: [User, Report],
-          synchronize: true,
+          // during development we use
+          // synchronize: true,
+          // to ease our work, but before deploy change it to false and never use again
+          synchronize: false,
         };
       },
     }),
