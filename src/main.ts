@@ -52,7 +52,7 @@ async function bootstrap() {
     process.exit();
   });
 
-  app.listen(3088);
+  app.listen(process.env.PORT || 3088);
 }
 
 bootstrap();

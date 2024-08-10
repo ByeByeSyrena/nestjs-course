@@ -33,18 +33,24 @@ switch (process.env.NODE_ENV) {
   case 'production':
     Object.assign(dbConfig, {
       type: 'postgres',
+      url: process.env.DATABASE_URL,
       database: '',
       entities: ['**/*.entity.ts'],
       migrationsRun: true,
+      synchronize: false,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     });
     break;
   default:
   case 'test':
     Object.assign(dbConfig, {
       type: 'sqlite',
-      database: 'test.sqlite',
-      entities: ['**/*.entity.ts'],
+      database: 'db.sqlite',
+      entities: ['**/*.entity.js'],
       migrationsRun: true,
+      synchronize: true,
     });
 }
 
